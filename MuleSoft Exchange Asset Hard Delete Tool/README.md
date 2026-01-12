@@ -27,12 +27,7 @@ Both scripts support the following options:
 
 ### Windows (PowerShell / Batch)
 
-You can run the tool using the `.bat` wrapper or directly via PowerShell.
-
-**Using Batch Wrapper (Recommended):**
-```cmd
-mulesoft-hard-delete.bat -Username <USERNAME> -Password <PASSWORD> -OrgId <ORG_ID>
-```
+You can run the tool directly via PowerShell.
 
 **Using PowerShell:**
 ```powershell
