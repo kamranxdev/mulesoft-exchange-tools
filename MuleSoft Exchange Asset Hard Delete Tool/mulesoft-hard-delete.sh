@@ -2,15 +2,47 @@
 # MuleSoft Exchange Asset Hard Delete Tool
 # File: mulesoft-hard-delete.sh
 
-# Configuration
-USERNAME="<YOUR_USERNAME>"
-PASSWORD="<YOUR_PASSWORD>"
-ORG_ID="<YOUR_ORG_ID>"
+# Function to display usage
+usage() {
+  echo "Usage: $0 -u <username> -p <password> -o <org_id> [options]"
+  echo ""
+  echo "Options:"
+  echo "  -u, --username <username>   MuleSoft Username (Required)"
+  echo "  -p, --password <password>   MuleSoft Password (Required)"
+  echo "  -o, --org-id <org_id>       Organization ID (Required)"
+  echo "  -l, --limit <limit>         Limit results (default: 40)"
+  echo "  --offset <offset>           Offset results (default: 0)"
+  echo "  -s, --search <search>       Search filter"
+  echo "  -h, --help                  Show this help message"
+  exit 1
+}
+
+# Default values
 LIMIT=40
 OFFSET=0
-SEARCH=""  # Optional filter; empty for all
+SEARCH=""
 
-# Step 1: Get access token
+# Parse arguments
+while [[ "$#" -gt 0 ]]; do
+  case $1 in
+    -u|--username) USERNAME="$2"; shift ;;
+    -p|--password) PASSWORD="$2"; shift ;;
+    -o|--org-id) ORG_ID="$2"; shift ;;
+    -l|--limit) LIMIT="$2"; shift ;;
+    --offset) OFFSET="$2"; shift ;;
+    -s|--search) SEARCH="$2"; shift ;;
+    -h|--help) usage ;;
+    *) echo "Unknown parameter passed: $1"; usage ;;
+  esac
+  shift
+done
+
+# Validate required arguments
+if [ -z "${USERNAME}" ] || [ -z "${PASSWORD}" ] || [ -z "${ORG_ID}" ]; then
+  echo "Error: Missing required arguments."
+  usage
+fi
+
 TOKEN_RESPONSE=$(curl -s -X POST \
   https://anypoint.mulesoft.com/accounts/login \
   -H "Content-Type: application/json" \

@@ -1,13 +1,25 @@
 # MuleSoft Exchange Asset Hard Delete Tool
 # File: mulesoft-hard-delete.ps1
 
-# Configuration
-$USERNAME = "<YOUR_USERNAME>"
-$PASSWORD = "<YOUR_PASSWORD>"
-$ORG_ID = "<YOUR_ORG_ID>"
-$LIMIT = 40
-$OFFSET = 0
-$SEARCH = ""  # Optional filter; empty for all
+param (
+    [Parameter(Mandatory=$true, HelpMessage="MuleSoft Username")]
+    [string]$USERNAME,
+
+    [Parameter(Mandatory=$true, HelpMessage="MuleSoft Password")]
+    [string]$PASSWORD,
+
+    [Parameter(Mandatory=$true, HelpMessage="Organization ID")]
+    [string]$ORG_ID,
+
+    [Parameter(Mandatory=$false)]
+    [int]$LIMIT = 40,
+
+    [Parameter(Mandatory=$false)]
+    [int]$OFFSET = 0,
+
+    [Parameter(Mandatory=$false)]
+    [string]$SEARCH = ""
+)
 
 # Step 1: Get access token
 Write-Host "🔐 Logging in..." -ForegroundColor Cyan
